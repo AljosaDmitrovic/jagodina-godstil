@@ -86,16 +86,27 @@
 
 
     // Portfolio isotope and filter
-    var portfolioIsotope = $('.portfolio-container').isotope({
-        itemSelector: '.portfolio-item',
-        layoutMode: 'fitRows'
-    });
-    $('#portfolio-flters li').on('click', function () {
-        $("#portfolio-flters li").removeClass('active');
-        $(this).addClass('active');
+    var $portfolio = $('.portfolio-container');
+    if ($portfolio.length) {
+        var portfolioIsotope = $portfolio.isotope({
+            itemSelector: '.portfolio-item',
+            layoutMode: 'fitRows'
+        });
+        $('#portfolio-flters li').on('click', function () {
+            $("#portfolio-flters li").removeClass('active');
+            $(this).addClass('active');
 
-        portfolioIsotope.isotope({filter: $(this).data('filter')});
-    });
+            portfolioIsotope.isotope({filter: $(this).data('filter')});
+        });
+
+        // Card heights can still change once images and fonts load, so lay out again
+        $portfolio.find('img').on('load', function () {
+            portfolioIsotope.isotope('layout');
+        });
+        $(window).on('load', function () {
+            portfolioIsotope.isotope('layout');
+        });
+    }
     
 })(jQuery);
 
